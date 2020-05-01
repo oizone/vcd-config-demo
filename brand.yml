@@ -1,0 +1,57 @@
+---
+- name: Config
+  hosts: localhost
+  tasks:
+  - name: AUTH
+    uri:
+      url: https://1.public.ci.demo.tieto.com/api/sessions
+      method: POST
+      force: yes
+      user: admin@system
+      password: 3vTc8BceQ54aCUmB
+      force_basic_auth: yes
+      return_content: no
+      status_code: 200
+      validate_certs: no
+      headers:
+        Accept: application/*+xml;version=33.0
+    register: login
+  - name: Branding update from json
+    uri:
+      url: https://1.public.ci.demo.tieto.com/cloudapi/branding
+      method: PUT
+      force: yes
+      return_content: no
+      status_code: 200
+      validate_certs: no
+      src: brand.json
+      headers:
+        Accept: application/*;version=33.0
+        x-vcloud-authorization: "{{ login.x_vcloud_authorization }}"
+        Content-Type: application/json
+  - name: Branding update logo
+    uri:
+      url: https://1.public.ci.demo.tieto.com/cloudapi/branding/logo
+      method: PUT
+      force: yes
+      return_content: no
+      status_code: 204
+      validate_certs: no
+      src: Tieto_logo_blue.png
+      headers:
+        Accept: image/*;version=33.0
+        x-vcloud-authorization: "{{ login.x_vcloud_authorization }}"
+        Content-Type: image/png
+  - name: Branding update icon
+    uri:
+      url: https://1.public.ci.demo.tieto.com/cloudapi/branding/icon
+      method: PUT
+      force: yes
+      return_content: no
+      status_code: 204
+      validate_certs: no
+      src: icon2.png
+      headers:
+        Accept: image/*;version=33.0
+        x-vcloud-authorization: "{{ login.x_vcloud_authorization }}"
+        Content-Type: image/png
