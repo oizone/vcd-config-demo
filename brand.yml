@@ -1,24 +1,26 @@
 ---
-- name: Config
+- name: Config 
   hosts: localhost
+  vars_files:
+    - vars.yml
   tasks:
   - name: AUTH
     uri:
-      url: https://1.public.ci.demo.tieto.com/api/sessions
+      url: https://{{vcd_url}}/api/sessions
       method: POST
       force: yes
-      user: admin@system
-      password: 3vTc8BceQ54aCUmB
+      user: "{{ lookup('env', 'VCDUSER') }}"
+      password: "{{ lookup('env', 'VCDPWD') }}"
       force_basic_auth: yes
       return_content: no
       status_code: 200
       validate_certs: no
       headers:
-        Accept: application/*+xml;version=33.0
+        Accept: application/*+xml;version={{api_ver}}
     register: login
   - name: Branding update from json
     uri:
-      url: https://1.public.ci.demo.tieto.com/cloudapi/branding
+      url: https://{{vcd_url}}/cloudapi/branding
       method: PUT
       force: yes
       return_content: no
@@ -26,12 +28,12 @@
       validate_certs: no
       src: brand.json
       headers:
-        Accept: application/*;version=33.0
+        Accept: application/*;version={{api_ver}}
         x-vcloud-authorization: "{{ login.x_vcloud_authorization }}"
         Content-Type: application/json
   - name: Branding update logo
     uri:
-      url: https://1.public.ci.demo.tieto.com/cloudapi/branding/logo
+      url: https://{{vcd_url}}/cloudapi/branding/logo
       method: PUT
       force: yes
       return_content: no
@@ -39,12 +41,12 @@
       validate_certs: no
       src: Tieto_logo_blue.png
       headers:
-        Accept: image/*;version=33.0
+        Accept: image/*;version={{api_ver}}
         x-vcloud-authorization: "{{ login.x_vcloud_authorization }}"
         Content-Type: image/png
   - name: Branding update icon
     uri:
-      url: https://1.public.ci.demo.tieto.com/cloudapi/branding/icon
+      url: https://{{vcd_url}}/cloudapi/branding/icon
       method: PUT
       force: yes
       return_content: no
@@ -52,6 +54,6 @@
       validate_certs: no
       src: icon2.png
       headers:
-        Accept: image/*;version=33.0
+        Accept: image/*;version={{api_ver}}
         x-vcloud-authorization: "{{ login.x_vcloud_authorization }}"
         Content-Type: image/png
