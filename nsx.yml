@@ -1,0 +1,61 @@
+---
+- name: Config 
+  hosts: localhost
+  vars_files:
+    - vars.yml
+  tasks:
+  - name: AUTH
+    uri:
+      url: https://{{vcd_url}}/api/sessions
+      method: POST
+      force: yes
+      user: "{{ lookup('env', 'VCDUSER') }}"
+      password: "{{ lookup('env', 'VCDPWD') }}"
+      force_basic_auth: yes
+      return_content: no
+      status_code: 200
+      validate_certs: no
+      headers:
+        Accept: application/*+xml;version={{api_ver}}
+    register: login
+  - name: Get certificate
+    shell: "echo | openssl s_client -showcerts -connect {{nsx_url}}:443 2>/dev/null | openssl x509 -inform pem"
+    register: certificate
+  - name: upload certificate
+    uri:
+      url: https://1.public.ci.demo.tieto.com/cloudapi/1.0.0/ssl/trustedCertificates
+      method: POST
+      force: yes
+      return_content: no
+      status_code: 201
+      validate_certs: no
+      body:
+        id: null
+        alias: "{{vcenter_url}}"
+        certificate: "{{ certificate.stdout }}"
+      body_format: json
+      headers:
+        Accept: application/json;version={{api_ver}}
+        x-vcloud-authorization: "{{ login.x_vcloud_authorization }}"
+        Content-Type: application/json
+  - name: Register NSX
+    uri:
+      url: https://1.public.ci.demo.tieto.com/api/admin/extension/nsxtManagers
+      method: POST
+      force: yes
+      return_content: no
+      status_code: 200
+      validate_certs: no
+      body:
+        name: "{{nsx_url}}"
+        description: null
+        url: "https://{{nsx_url}}"
+        networkProviderScope: null
+        username: "{{nsx_user}}"
+        password: "{{nsx_pwd}}"
+      body_format: json
+      headers:
+        Accept: application/*+json;version={{api_ver}}
+        x-vcloud-authorization: "{{ login.x_vcloud_authorization }}"
+        Content-Type: application/*+json
+

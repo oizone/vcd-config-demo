@@ -1,3 +1,9 @@
 ---
 vcd_url: 1.public.ci.demo.tieto.com
 api_ver: 34.0
+vcenter_url: 
+vcenter_user: 
+vcenter_pwd: 
+nsx_url: 
+nsx_user: 
+nsx_pwd: 

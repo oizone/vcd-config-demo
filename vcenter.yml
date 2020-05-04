@@ -1,0 +1,54 @@
+---
+- name: Config 
+  hosts: localhost
+  vars_files:
+    - vars.yml
+  tasks:
+  - name: AUTH
+    uri:
+      url: https://{{vcd_url}}/api/sessions
+      method: POST
+      force: yes
+      user: "{{ lookup('env', 'VCDUSER') }}"
+      password: "{{ lookup('env', 'VCDPWD') }}"
+      force_basic_auth: yes
+      return_content: no
+      status_code: 200
+      validate_certs: no
+      headers:
+        Accept: application/*+xml;version={{api_ver}}
+    register: login
+  - name: Get certificate
+    shell: "echo | openssl s_client -showcerts -connect {{vcenter_url}}:443 2>/dev/null | openssl x509 -inform pem"
+    register: certificate
+  - name: upload certificate
+    uri:
+      url: https://1.public.ci.demo.tieto.com/cloudapi/1.0.0/ssl/trustedCertificates
+      method: POST
+      force: yes
+      return_content: no
+      status_code: 201
+      validate_certs: no
+      body:
+        id: null
+        alias: "{{vcenter_url}}"
+        certificate: "{{ certificate.stdout }}"
+      body_format: json
+      headers:
+        Accept: application/json;version={{api_ver}}
+        x-vcloud-authorization: "{{ login.x_vcloud_authorization }}"
+        Content-Type: application/json
+  - name: Register vCenter
+    uri:
+      url: https://1.public.ci.demo.tieto.com/api/admin/extension/action/registervimserver
+      method: POST
+      force: yes
+      return_content: no
+      status_code: 200
+      validate_certs: no
+      body: <root:RegisterVimServerParams xmlns:root="http://www.vmware.com/vcloud/extension/v1.5" xmlns:ns0="http://www.vmware.com/vcloud/v1.5"><root:VimServer name="vc7"><ns0:Description/><root:Username>{{vcenter_user}}</root:Username><root:Password>{{vcenter_pwd}}</root:Password><root:Url>https://{{vcenter_url}}</root:Url><root:IsEnabled>true</root:IsEnabled><root:UseVsphereService>false</root:UseVsphereService><root:VsphereWebClientServerUrl>https://{{vcenter_url}}/</root:VsphereWebClientServerUrl><root:tenantScoped>false</root:tenantScoped><root:proxyEnabled>false</root:proxyEnabled></root:VimServer></root:RegisterVimServerParams>
+      body_format: raw
+      headers:
+        Accept: application/*+xml;version={{api_ver}}
+        x-vcloud-authorization: "{{ login.x_vcloud_authorization }}"
+        Content-Type: application/vnd.vmware.admin.registerVimServerParams+xml;charset=UTF-8
