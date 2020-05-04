@@ -23,7 +23,7 @@
     register: certificate
   - name: upload certificate
     uri:
-      url: https://1.public.ci.demo.tieto.com/cloudapi/1.0.0/ssl/trustedCertificates
+      url: https://{{vcd_url}}/cloudapi/1.0.0/ssl/trustedCertificates
       method: POST
       force: yes
       return_content: no
@@ -40,7 +40,7 @@
         Content-Type: application/json
   - name: Register vCenter
     uri:
-      url: https://1.public.ci.demo.tieto.com/api/admin/extension/action/registervimserver
+      url: https://{{vcd_url}}/api/admin/extension/action/registervimserver
       method: POST
       force: yes
       return_content: no
