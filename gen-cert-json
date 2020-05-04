@@ -1,0 +1,5 @@
+#!/bin/bash
+
+echo '"{"id":null,"alias":"$1","certificate":"' > payload.json
+echo | openssl s_client -showcerts -connect $1:443 2>/dev/null | openssl x509 -inform pem >> payload.json
+echo '"}'>> payload.json
