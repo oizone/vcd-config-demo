@@ -18,7 +18,7 @@
 	},
 	{
 	    "name":"help",
-	    "menuItemType":"override"
+	    "menuItemType":"override",
 	    "url": null
 	}
     ]
