@@ -15,16 +15,6 @@
 	    "name":"Google",
 	    "menuItemType":"link",
 	    "url":"https://www.google.com/"
-	},
-	{
-	    "name":"help",
-	    "menuItemType":"override",
-	    "url": null
-	},
-	{
-	    "name":"about",
-	    "menuItemType":"override",
-	    "url": null
 	}
     ]
 }
