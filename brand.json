@@ -1,1 +1,23 @@
-{"portalName":"TietoEVRY Cloud","portalColor":"#063954","selectedTheme":{"themeType":"BUILT_IN","name":"Default"},"customLinks":[{"name":"TSC","menuItemType":"link","url":"https://tieto.service-now.com/tsc/"}]}
+{
+    "portalName":"TietoEVRY Cloud",
+    "portalColor":"#063954",
+    "selectedTheme":{
+	"themeType":"BUILT_IN",
+	"name":"Default"
+    },
+    "customLinks":[
+	{
+	    "name":"TSC",
+	    "menuItemType":"link",
+	    "url":"https://tieto.service-now.com/tsc/"
+	},
+	{
+	    "menuItemType":"separator",
+	},
+	{
+	    "name":"Google",
+	    "menuItemType":"link",
+	    "url":"https://www.google.com/"
+	}
+    ]
+}
