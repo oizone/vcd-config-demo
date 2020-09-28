@@ -12,9 +12,6 @@
 	    "url":"https://tieto.service-now.com/tsc/"
 	},
 	{
-	    "menuItemType":"separator",
-	},
-	{
 	    "name":"Google",
 	    "menuItemType":"link",
 	    "url":"https://www.google.com/"
