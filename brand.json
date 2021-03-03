@@ -1,5 +1,5 @@
 {
-    "portalName":"TietoEVRY Cloud",
+    "portalName":"Hybrid Cloud",
     "portalColor":"#063954",
     "selectedTheme":{
 	"themeType":"BUILT_IN",
@@ -7,14 +7,14 @@
     },
     "customLinks":[
 	{
-	    "name":"TSC",
+	    "name":"TietoEVRY Service Channel",
 	    "menuItemType":"link",
 	    "url":"https://tieto.service-now.com/tsc/"
 	},
 	{
-	    "name":"Google",
+	    "name":"VMware Cloud Director API",
 	    "menuItemType":"link",
-	    "url":"https://www.google.com/"
+	    "url":"https://code.vmware.com/apis/912/vmware-cloud-director/"
 	}
     ]
 }

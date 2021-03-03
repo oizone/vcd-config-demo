@@ -1,11 +1,5 @@
 #!/bin/bash
 APIVER=34.0
-#echo "Enter Cloud Director URL name: "
-#read HOST
-#echo "Enter Cloud Director IP(blank to resolve using URL): "
-#read IP
-#echo "Enter Cloud Director username: "
-#read USER
 echo "Enter Cloud Director password: "
 read -s PASSWD
 
@@ -20,7 +14,7 @@ KEY=`curl -I --header "Accept: application/*;version="${APIVER} --header "Author
 curl --header "Accept: application/*;version=${APIVER}" --header "Authorization: Bearer ${KEY}" --request PUT -d @brand.json -H "Content-Type: application/json" https://${HOST}/cloudapi/branding/
 
 
-curl --header "Accept: image/*;version=${APIVER}" --header "Authorization: Bearer ${KEY}" --request PUT -d @tietoevry-logo.png -H "Content-Type: image/png" https://${HOST}/cloudapi/branding/logo
+curl --header "Accept: image/*;version=${APIVER}" --header "Authorization: Bearer ${KEY}" --request PUT --data-binary @tietoevry-logo.png -H "Content-Type: image/png" https://${HOST}/cloudapi/branding/logo
 
-curl --header "Accept: image/*;version=${APIVER}" --header "Authorization: Bearer ${KEY}" --request PUT -d @tietoevry-icon.png -H "Content-Type: image/png" https://${HOST}/cloudapi/branding/icon
+curl --header "Accept: image/*;version=${APIVER}" --header "Authorization: Bearer ${KEY}" --request PUT --data-binary @te-logo-192.png -H "Content-Type: image/png" https://${HOST}/cloudapi/branding/icon
 
